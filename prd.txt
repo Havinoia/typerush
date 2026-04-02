@@ -1,0 +1,165 @@
+🚀 TypeRush – Speed Typing Test App
+1. 📌 Overview
+
+TypeRush adalah aplikasi web interaktif yang dirancang untuk mengukur kecepatan dan akurasi mengetik pengguna secara real-time. Aplikasi ini menyediakan pengalaman latihan mengetik yang cepat, responsif, dan kompetitif dengan fitur analisis performa.
+
+2. 🎯 Tujuan Produk
+Membantu user mengukur kemampuan mengetik (WPM & akurasi)
+Menyediakan latihan mengetik yang engaging
+Menjadi project portfolio yang menunjukkan skill frontend & backend
+(Opsional) Membangun sistem leaderboard kompetitif
+3. 👤 Target User
+Pelajar / mahasiswa
+Programmer / content writer
+User umum yang ingin meningkatkan typing skill
+4. ⭐ Fitur Utama
+4.1 Typing Test
+Menampilkan teks secara random
+User mengetik di input field
+Highlight:
+Hijau = benar
+Merah = salah
+4.2 Timer System
+Pilihan durasi:
+30 detik
+60 detik
+Timer berjalan saat user mulai mengetik
+4.3 WPM (Words Per Minute)
+
+Perhitungan menggunakan rumus standar:
+
+𝑊
+𝑃
+𝑀
+=
+Jumlah Karakter
+5
+÷
+Waktu (menit)
+WPM=
+5
+Jumlah Karakter
+	​
+
+÷Waktu (menit)
+
+4.4 Accuracy Calculation
+
+Mengukur tingkat ketepatan:
+
+𝐴
+𝑐
+𝑐
+𝑢
+𝑟
+𝑎
+𝑐
+𝑦
+=
+Karakter Benar
+Total Karakter
+×
+100
+%
+Accuracy=
+Total Karakter
+Karakter Benar
+	​
+
+×100%
+
+4.5 Result Screen
+
+Menampilkan:
+
+WPM
+Accuracy
+Total karakter
+Tombol retry
+5. 🚀 Fitur Advanced (Phase 2)
+5.1 Authentication
+Register / Login
+User profile
+5.2 Leaderboard
+Ranking berdasarkan WPM
+Filter:
+Harian
+Mingguan
+All-time
+5.3 History
+Riwayat hasil typing user
+5.4 Difficulty Level
+Easy (kata pendek)
+Medium
+Hard (kalimat panjang)
+6. 🧩 User Flow
+Flow Utama:
+User buka website
+Klik "Start Test"
+Teks muncul
+User mulai mengetik
+Timer berjalan
+Timer habis
+Muncul hasil (WPM & Accuracy)
+User bisa retry / save score
+7. 🖥️ Halaman (Pages)
+7.1 Home Page
+Hero section
+Tombol "Start Typing"
+7.2 Typing Page
+Text display
+Input field
+Timer
+Live stats
+7.3 Result Page
+Statistik hasil
+Retry button
+7.4 Leaderboard Page (optional)
+Ranking user
+8. 🛠️ Tech Stack
+Frontend:
+HTML, CSS, JavaScript
+(Optional) Vue 3
+Backend:
+Laravel (API / Blade)
+Database:
+MySQL
+9. 🗄️ Database Design
+Table: users
+id
+name
+email
+password
+Table: results
+id
+user_id
+wpm
+accuracy
+total_chars
+created_at
+10. 🎨 UI/UX Requirements
+Clean & modern design
+Responsive (mobile & desktop)
+Real-time feedback saat mengetik
+Smooth animation (optional)
+11. ⚡ Non-Functional Requirements
+Fast response (real-time typing)
+Minimal delay (no lag input)
+Secure authentication (Laravel standard)
+12. 📊 Success Metrics
+User bisa menyelesaikan test tanpa bug
+Perhitungan WPM & accuracy akurat
+UI responsif & nyaman digunakan
+13. 🔥 Future Improvement
+Multiplayer typing race
+Sound effect typing
+Custom text input
+AI-generated text
+14. 💼 Nilai Jual (Untuk Portfolio)
+
+TypeRush menunjukkan:
+
+Kemampuan frontend (real-time interaction)
+Kemampuan backend (Laravel + database)
+Logic programming (perhitungan WPM & accuracy)
+UX thinking
