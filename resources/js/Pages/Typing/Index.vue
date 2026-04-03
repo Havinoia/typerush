@@ -137,6 +137,11 @@ const wpm = computed(() => {
     return Math.round((correct / 5) / timeInMinutes);
 });
 
+const raceProgress = computed(() => {
+    if (!currentParagraph.value) return 0;
+    return Math.min((userInput.value.length / currentParagraph.value.length) * 100, 100);
+});
+
 const paragraphWords = computed(() => {
     if (!currentParagraph.value) return [];
     
@@ -326,15 +331,57 @@ onMounted(() => {
                     </div>
 
                     <!-- Typing Container -->
-                                        <div class="glass-card border border-white/10 p-4 sm:p-8 relative">
-                        <!-- Original Test Over Overlay (Keep as fallback) -->
+                    <div class="glass-card border border-white/10 p-4 sm:p-8 relative">
+                        <!-- New Test Over Overlay (Keep as fallback) -->
                         <div v-if="isFinished && !showResultsModal" class="absolute inset-0 z-[60] bg-gray-900/90 flex flex-col items-center justify-center backdrop-blur-sm">
                             <button @click="resetTest(); fetchRandomParagraph()" class="px-8 py-3 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl font-black uppercase tracking-widest transition-all">
                                 New Test
                             </button>
                         </div>
 
-                        <div class="flex justify-start items-center mb-6 relative z-[70]">
+                        <!-- Race Track Container -->
+                        <div class="mb-10 px-2 group">
+                            <div class="relative h-16 flex items-center">
+                                <!-- The Track -->
+                                <div class="absolute inset-x-0 h-[2px] bg-white/10 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-indigo-500/50 to-amber-400/50 transition-all duration-300"
+                                        :style="{ width: `${raceProgress}%` }"></div>
+                                </div>
+                                
+                                <!-- Finish Flag Marker -->
+                                <div class="absolute right-0 top-1/2 -translate-y-1/2 flex flex-col items-center">
+                                    <div class="w-[2px] h-10 bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.5)]"></div>
+                                    <span class="text-[10px] font-black text-amber-400 uppercase mt-1">Finish</span>
+                                </div>
+
+                                <!-- The Car -->
+                                <div class="absolute transition-all duration-300 ease-out flex items-center"
+                                    :style="{ left: `${raceProgress}%`, transform: `translateX(-50%)` }">
+                                    <div class="relative" :class="{ 'animate-turbo-shake': wpm > 60 }">
+                                        <!-- Car Nitro Trail -->
+                                        <div v-if="wpm > 80" class="absolute -left-10 top-1/2 -translate-y-1/2 w-16 h-6 bg-indigo-500/30 blur-md rounded-full -z-10 animate-pulse"></div>
+                                        
+                                        <!-- Car SVG -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-indigo-400 transition-all duration-300"
+                                            :class="{ 
+                                                'drop-shadow-[0_0_15px_rgba(129,140,248,0.8)] filter brightness-125 ': wpm > 40,
+                                                'text-amber-400 drop-shadow-[0_0_20px_rgba(251,191,36,1)]': wpm > 90
+                                            }" 
+                                            viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M23.5,15.5l-3,0l0,-1l1.5,-3c0.3,-0.6 -0.1,-1.5 -1,-1.5l-10,-0l-4.5,0l-1.5,1.5l0,4l-4,0l0,2l23,0l1,-2l-1.5,-1ZM5,18.5c-0.8,0 -1.5,-0.7 -1.5,-1.5s0.7,-1.5 1.5,-1.5s1.5,0.7 1.5,1.5s-0.7,1.5 -1.5,1.5ZM17,18.5c-0.8,0 -1.5,-0.7 -1.5,-1.5s0.7,-1.5 1.5,-1.5s1.5,0.7 1.5,1.5s-0.7,1.5 -1.5,1.5Z" />
+                                        </svg>
+                                        
+                                        <!-- Speed Indicator -->
+                                        <div class="absolute -top-7 left-1/2 -translate-x-1/2 text-[10px] font-black whitespace-nowrap bg-indigo-500 text-white px-2 py-0.5 rounded shadow-lg transition-opacity duration-300"
+                                            :class="wpm > 30 ? 'opacity-100' : 'opacity-0'">
+                                            {{ wpm }} WPM
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center mb-6 relative z-[70]">
                             <div class="flex items-center space-x-2">
                                 <button @click="toggleLanguage" 
                                     class="text-gray-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-lg flex items-center space-x-2 min-w-[60px] justify-center group">
@@ -457,6 +504,17 @@ onMounted(() => {
 
 .animate-pulse {
     animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes animate-turbo-shake {
+    0% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-1px) rotate(0.5deg); }
+    75% { transform: translateY(1px) rotate(-0.5deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+}
+
+.animate-turbo-shake {
+    animation: animate-turbo-shake 0.1s linear infinite;
 }
 
 /* Custom highlight for error characters */
