@@ -10,7 +10,7 @@ use App\Http\Controllers\TypingController;
 Route::get('/', [TypingController::class, 'index'])->name('typing.index');
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return redirect()->intended(route('typing.index', absolute: false));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

@@ -28,7 +28,6 @@ const user = page.props.auth?.user;
                                 <span class="ml-3 text-2xl font-black text-white tracking-tighter uppercase italic group-hover:text-amber-400 transition-colors">TypeRush</span>
                             </Link>
                         </div>
-
                         <!-- Navigation Links -->
                         <div class="hidden space-x-1 sm:ms-12 sm:flex items-center">
                             <NavLink :href="route('typing.index')" :active="route().current('typing.index')" class="px-4 py-2 rounded-xl hover:bg-white/5 transition-all">
@@ -36,9 +35,6 @@ const user = page.props.auth?.user;
                             </NavLink>
                             <NavLink :href="route('typing.leaderboard')" :active="route().current('typing.leaderboard')" class="px-4 py-2 rounded-xl hover:bg-white/5 transition-all">
                                 Leaderboard
-                            </NavLink>
-                            <NavLink v-if="user" :href="route('dashboard')" :active="route().current('dashboard')" class="px-4 py-2 rounded-xl hover:bg-white/5 transition-all">
-                                Dashboard
                             </NavLink>
                         </div>
                     </div>
@@ -90,7 +86,6 @@ const user = page.props.auth?.user;
                 <div class="space-y-1 pb-3 pt-2 px-4">
                     <ResponsiveNavLink :href="route('typing.index')" :active="route().current('typing.index')">Typing Test</ResponsiveNavLink>
                     <ResponsiveNavLink :href="route('typing.leaderboard')" :active="route().current('typing.leaderboard')">Leaderboard</ResponsiveNavLink>
-                    <ResponsiveNavLink v-if="user" :href="route('dashboard')" :active="route().current('dashboard')">Dashboard</ResponsiveNavLink>
                 </div>
                 <div v-if="user" class="border-t border-white/5 pb-1 pt-4">
                     <div class="px-6">
