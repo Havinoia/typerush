@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TypeRush Vercel Serverless Bridge - Ultra Resilient Version
+ * TypeRush Vercel Serverless Bridge - Full Foundation Wake-up
  */
 
 error_reporting(E_ALL);
@@ -34,14 +34,23 @@ if (getenv('VERCEL')) {
 try {
     $app = require_once __DIR__ . '/../bootstrap/app.php';
 
-    // JURUS PAMUNGKAS: Memaksa pemuatan provider yang tertunda (sesuai panduan debug)
-    if (method_exists($app, 'loadDeferredProviders')) {
-        $app->loadDeferredProviders();
+    // Memaksa pemuatan provider yang terlewat (Membangunkan Pondasi Dasar)
+    $coreProviders = [
+        Illuminate\Filesystem\FilesystemServiceProvider::class,
+        Illuminate\Log\LogServiceProvider::class,
+        Illuminate\View\ViewServiceProvider::class,
+        Illuminate\Database\DatabaseServiceProvider::class,
+        Illuminate\Session\SessionServiceProvider::class,
+    ];
+
+    foreach ($coreProviders as $provider) {
+        if (!$app->getProvider($provider)) {
+            $app->register($provider);
+        }
     }
 
-    // Suntikan manual jika View engine masih "hilang"
-    if (!$app->bound('view')) {
-        $app->register(Illuminate\View\ViewServiceProvider::class);
+    if (method_exists($app, 'loadDeferredProviders')) {
+        $app->loadDeferredProviders();
     }
 
     // 4. Handle Request
@@ -58,9 +67,8 @@ try {
     echo "<p><b>Original Exception:</b> " . get_class($e) . "</p>";
     echo "<p><b>Message:</b> " . $e->getMessage() . "</p>";
     
-    // Diagnostic info
     if (getenv('APP_DEBUG') === 'true' || getenv('VERCEL')) {
-        echo "<pre style='background:#eee;padding:10px;'>" . $e->getTraceAsString() . "</pre>";
+        echo "<pre style='background:#eee;padding:10px;overflow:auto;'>" . $e->getTraceAsString() . "</pre>";
     }
     exit(1);
 }
