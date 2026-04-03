@@ -6,7 +6,7 @@
  */
 
 // If running on Vercel, prepare the writable storage directory in /tmp
-if (env('VERCEL')) {
+if (getenv('VERCEL')) {
     $storagePath = '/tmp/storage';
     $dirs = [
         $storagePath . '/framework/views',
