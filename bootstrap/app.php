@@ -29,7 +29,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
 | Vercel has a read-only filesystem. We redirect all storage activity 
 | to /tmp/storage to ensure the application can write its state.
 */
-if (env('VERCEL')) {
+if (getenv('VERCEL')) {
     $app->useStoragePath('/tmp/storage');
 }
 

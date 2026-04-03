@@ -25,7 +25,12 @@ if (getenv('VERCEL')) {
     }
 }
 
-// 3. Boot Laravel
+// 3. Diagnostic Check for APP_KEY
+if (empty(getenv('APP_KEY')) && empty($_ENV['APP_KEY'])) {
+    die("<h1>TypeRush Configuration Error</h1><p>The <b>APP_KEY</b> environment variable is missing from your Vercel Project Settings. Please add it to fix this error.</p>");
+}
+
+// 4. Boot Laravel
 try {
     require __DIR__ . '/../public/index.php';
 } catch (\Exception $e) {
