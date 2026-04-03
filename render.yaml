@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: typerush
+    runtime: php 
+    plan: free
+    buildCommand: composer install --no-dev && npm install && npm run build
+    startCommand: php vendor/bin/heroku-php-apache2 public/
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: LOG_CHANNEL
+        value: errorlog
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: SESSION_DRIVER
+        value: database
+      - key: CACHE_STORE
+        value: database
