@@ -1,11 +1,8 @@
 <?php
 
 /**
- * TypeRush Vercel Serverless Bridge - Full Foundation Wake-up (Hardened)
+ * TypeRush Vercel Serverless Bridge - Standard Secure Version
  */
-
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
 
 // 1. Mandatory Autoloader
 require __DIR__ . '/../vendor/autoload.php';
@@ -26,40 +23,25 @@ if (getenv('VERCEL')) {
         }
     }
 
-    // Redirect internal maps to /tmp
+    // Redirect internal Laravel discovery maps to /tmp
     putenv("LARAVEL_SERVICES_CACHE={$storagePath}/bootstrap/cache/services.php");
     putenv("LARAVEL_PACKAGES_CACHE={$storagePath}/bootstrap/cache/packages.php");
     putenv("LARAVEL_CONFIG_CACHE={$storagePath}/bootstrap/cache/config.php");
     putenv("LARAVEL_ROUTES_CACHE={$storagePath}/bootstrap/cache/routes.php");
 }
 
-// 3. Boot Laravel
+// 3. Boot & Handle Request
 try {
+    // Get the application instance from the standard bootstrap
     $app = require_once __DIR__ . '/../bootstrap/app.php';
-
-    // Membangunkan SELURUH Pondasi Inti (Hardened Registration)
-    $coreProviders = [
-        Illuminate\Filesystem\FilesystemServiceProvider::class,
-        Illuminate\Log\LogServiceProvider::class,
-        Illuminate\View\ViewServiceProvider::class,
-        Illuminate\Database\DatabaseServiceProvider::class,
-        Illuminate\Session\SessionServiceProvider::class,
-        Illuminate\Encryption\EncryptionServiceProvider::class,
-        Illuminate\Translation\TranslationServiceProvider::class,
-        Illuminate\Validation\ValidationServiceProvider::class,
-    ];
-
-    foreach ($coreProviders as $provider) {
-        if (!$app->getProvider($provider)) {
-            $app->register($provider);
-        }
+    
+    // Check for APP_KEY immediately as it's the most common failure point
+    if (empty(getenv('APP_KEY')) && empty($_ENV['APP_KEY'])) {
+        die("<h1>TypeRush Configuration Error</h1><p>APP_KEY is missing in Vercel Settings.</p>");
     }
 
-    if (method_exists($app, 'loadDeferredProviders')) {
-        $app->loadDeferredProviders();
-    }
-
-    // 4. Handle Request
+    // Standard Request Handling through the Kernel
+    // This allows Laravel to boot its own providers in the correct order
     $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
     $response = $kernel->handle(
         $request = Illuminate\Http\Request::capture()
@@ -68,12 +50,14 @@ try {
     $kernel->terminate($request, $response);
     
 } catch (\Throwable $e) {
-    // Emergency Display
     http_response_code(500);
-    echo "<h1>🚨 TypeRush Foundation Error</h1>";
-    echo "<h3>" . get_class($e) . "</h3>";
-    echo "<p><b>Message:</b> " . $e->getMessage() . "</p>";
-    echo "<p><b>File:</b> " . $e->getFile() . " (Line " . $e->getLine() . ")</p>";
-    echo "<hr><pre style='background:#f4f4f4;padding:10px;overflow:auto;'>" . $e->getTraceAsString() . "</pre>";
+    if (getenv('APP_DEBUG') === 'true') {
+        echo "<h1>TypeRush Boot Error</h1>";
+        echo "<h3>" . get_class($e) . "</h3>";
+        echo "<p><b>Message:</b> " . $e->getMessage() . "</p>";
+        echo "<pre>" . $e->getTraceAsString() . "</pre>";
+    } else {
+        echo "<h1>500 Internal Server Error</h1><p>Please check the Vercel logs for more details.</p>";
+    }
     exit(1);
 }
