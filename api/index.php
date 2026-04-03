@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TypeRush Vercel Serverless Bridge - Emergency Debug Mode
+ * TypeRush Vercel Serverless Bridge - Full Foundation Wake-up (Hardened)
  */
 
 error_reporting(E_ALL);
@@ -26,23 +26,27 @@ if (getenv('VERCEL')) {
         }
     }
 
+    // Redirect internal maps to /tmp
     putenv("LARAVEL_SERVICES_CACHE={$storagePath}/bootstrap/cache/services.php");
     putenv("LARAVEL_PACKAGES_CACHE={$storagePath}/bootstrap/cache/packages.php");
     putenv("LARAVEL_CONFIG_CACHE={$storagePath}/bootstrap/cache/config.php");
     putenv("LARAVEL_ROUTES_CACHE={$storagePath}/bootstrap/cache/routes.php");
 }
 
-// 3. Boot Laravel & Handle Request
+// 3. Boot Laravel
 try {
     $app = require_once __DIR__ . '/../bootstrap/app.php';
-    
-    // Explicitly register critical core providers
+
+    // Membangunkan SELURUH Pondasi Inti (Hardened Registration)
     $coreProviders = [
         Illuminate\Filesystem\FilesystemServiceProvider::class,
         Illuminate\Log\LogServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Illuminate\Database\DatabaseServiceProvider::class,
         Illuminate\Session\SessionServiceProvider::class,
+        Illuminate\Encryption\EncryptionServiceProvider::class,
+        Illuminate\Translation\TranslationServiceProvider::class,
+        Illuminate\Validation\ValidationServiceProvider::class,
     ];
 
     foreach ($coreProviders as $provider) {
@@ -55,6 +59,7 @@ try {
         $app->loadDeferredProviders();
     }
 
+    // 4. Handle Request
     $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
     $response = $kernel->handle(
         $request = Illuminate\Http\Request::capture()
@@ -63,9 +68,9 @@ try {
     $kernel->terminate($request, $response);
     
 } catch (\Throwable $e) {
-    // FORCE DISPLAY ERROR - No matter what the setting is
+    // Emergency Display
     http_response_code(500);
-    echo "<h1>🚨 1st Stage Error Detected</h1>";
+    echo "<h1>🚨 TypeRush Foundation Error</h1>";
     echo "<h3>" . get_class($e) . "</h3>";
     echo "<p><b>Message:</b> " . $e->getMessage() . "</p>";
     echo "<p><b>File:</b> " . $e->getFile() . " (Line " . $e->getLine() . ")</p>";
