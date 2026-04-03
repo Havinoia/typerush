@@ -11,6 +11,14 @@
             "dest": "/public/build/$1"
         },
         {
+            "src": "/(assets|images|icons)/(.*)",
+            "dest": "/public/$1/$2"
+        },
+        {
+            "src": "/favicon.ico",
+            "dest": "/public/favicon.ico"
+        },
+        {
             "src": "/(.*)",
             "dest": "/api/index.php"
         }
@@ -23,5 +31,6 @@
         "VIEW_COMPILED_PATH": "/tmp",
         "SESSION_DRIVER": "database",
         "LOG_CHANNEL": "stderr"
-    }
+    },
+    "outputDirectory": "."
 }
