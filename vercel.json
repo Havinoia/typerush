@@ -31,5 +31,6 @@
         "VIEW_COMPILED_PATH": "/tmp",
         "SESSION_DRIVER": "database",
         "LOG_CHANNEL": "stderr"
-    }
+    },
+    "outputDirectory": "public"
 }
