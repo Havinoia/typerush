@@ -19,11 +19,9 @@ class TypingController extends Controller
 
     public function getRandomParagraph(Request $request)
     {
-        $difficulty = $request->query('difficulty', 'medium');
         $language = $request->query('language', 'en');
         
-        $paragraph = Paragraph::where('difficulty', $difficulty)
-            ->where('language', $language)
+        $paragraph = Paragraph::where('language', $language)
             ->inRandomOrder()
             ->first();
 
