@@ -11,12 +11,12 @@
             "dest": "/public/build/$1"
         },
         {
-            "src": "/(assets|images|icons)/(.*)",
-            "dest": "/public/$1/$2"
+            "src": "/(favicon.ico|robots.txt|manifest.json)",
+            "dest": "/public/$1"
         },
         {
-            "src": "/favicon.ico",
-            "dest": "/public/favicon.ico"
+            "src": "/assets/(.*)",
+            "dest": "/public/assets/$1"
         },
         {
             "src": "/(.*)",
@@ -31,6 +31,5 @@
         "VIEW_COMPILED_PATH": "/tmp",
         "SESSION_DRIVER": "database",
         "LOG_CHANNEL": "stderr"
-    },
-    "outputDirectory": "."
+    }
 }
