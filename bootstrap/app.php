@@ -5,6 +5,11 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
 return Application::configure(basePath: dirname(__DIR__))
+    /**
+     * Set the storage path to /tmp/storage when running on Vercel.
+     * Vercel's filesystem is read-only except for /tmp.
+     */
+    ->useStoragePath(env('VERCEL') ? '/tmp/storage' : null)
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         commands: __DIR__.'/../routes/console.php',
